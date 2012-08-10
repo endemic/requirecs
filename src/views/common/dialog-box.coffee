@@ -81,13 +81,6 @@ define [
 
 			buttonAction = $(e.target).attr 'data-action'
 
-			# Play using Cordova plugin if possible
-			if window.LowLatencyAudio?
-				window.LowLatencyAudio.play 'button'
-			# Otherwise, use preloaded <audio> object
-			else
-				window.sounds['button']?.play()
-
 			# Search through the buttons array, looking for the callback associated w/ the clicked button
 			for button in @options.buttons
 				if button.text.toLowerCase() is buttonAction and typeof button.callback is "function"

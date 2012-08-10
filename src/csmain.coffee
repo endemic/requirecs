@@ -10,12 +10,8 @@ define [
 	'buzz'
 	'cs!utilities/env'
 	'cs!views/title'
-	'cs!views/game'
 	'cs!views/about'
-	'cs!views/options'
-	'cs!views/level-select'
-	'cs!views/difficulty-select'
-], ($, _, Backbone, buzz, env, TitleScene, GameScene, AboutScene, OptionsScene, LevelSelectScene, DifficultySelectScene) ->
+], ($, _, Backbone, buzz, env, TitleScene, AboutScene) ->
 	
 	# Extend local storage
 	Storage.prototype.setObject = (key, value) ->
@@ -45,34 +41,22 @@ define [
 			# Create all game views here
 			@el = if @options.el? then @options.el else $('#app')
 			@titleScene = new TitleScene { el: @el }
-			@gameScene = new GameScene { el: @el }
 			@aboutScene = new AboutScene { el: @el }
-			@optionsScene = new OptionsScene { el: @el }
-			@levelScene = new LevelSelectScene { el: @el }
-			@difficultyScene = new DifficultySelectScene { el: @el }
 
 			# Bind handlers on each view to allow easy switching between scenes
 			@titleScene.on 'scene:change', @changeScene, @
-			@gameScene.on 'scene:change', @changeScene, @
 			@aboutScene.on 'scene:change', @changeScene, @
-			@optionsScene.on 'scene:change', @changeScene, @
-			@levelScene.on 'scene:change', @changeScene, @
-			@difficultyScene.on 'scene:change', @changeScene, @
 
 			# Hide all scenes (instantly)
 			@titleScene.hide 0
-			@gameScene.hide 0
 			@aboutScene.hide 0
-			@optionsScene.hide 0
-			@levelScene.hide 0
-			@difficultyScene.hide 0
 
 			# Set "active" scene
 			@activeScene = @titleScene
 
 			# Show the active scene when call stack is empty
 			_.defer =>
-				if env.cordova and env.ios then cordova.exec(null, null, "SplashScreen", "hide", [])	# Manually remove the Cordova splash screen; prevent a white flash while UIWebView is initialized
+				if env.cordova and env.ios then navigator.splashscreen.hide()	# Manually remove the Cordova splash screen; which prevents a white flash while UIWebView is initialized
 				@activeScene.show()
 
 			# Add an additional class to game container if "installed" on iOS homescreen - currently unused
@@ -92,7 +76,7 @@ define [
 				when 'title' then @activeScene = @titleScene
 				when 'about' then @activeScene = @aboutScene
 				else
-					console.log "Error! Scene not defined in switch statement" 
+					console.log "Whoops! Scene not defined in switch statement." 
 					@activeScene = @titleScene
 
 			@activeScene.show()
@@ -107,8 +91,8 @@ define [
 		# Called once when app initializes; again if user manually resizes browser window
 		resize: (e) ->
 			# Attempt to force a 2:3 aspect ratio, so that the percentage-based CSS layout is consistant
-			width = window.outerWidth
-			height = window.outerHeight
+			width = @el.outerWidth
+			height = @el.outerHeight
 
 			# This obj will be used to store how much padding is needed for each scene's container
 			padding = 
@@ -125,7 +109,7 @@ define [
 			# Aspect ratio to enforce
 			ratio = 3 / 2
 
-			# Tweet: Started writing some commented-out psuedocode, but it turned out to be CoffeeScript, so I uncommented it.
+			# Started writing some commented-out psuedocode, but it turned out to be CoffeeScript, so I uncommented it.
 			if orientation is 'landscape'
 				if width / ratio > height 		# Too wide; add padding to width
 					newWidth = height * ratio
@@ -156,9 +140,8 @@ define [
 				height: height
 				padding: "#{padding.height / 2}px #{padding.width / 2}px"
 
-			# Call a "resize" method on views that need it
-			@gameScene.resize width, height, orientation
-			@levelScene.resize width, height, orientation
+			# Call a "resize" method on views that need the size on certain elements to be recalculated
+			# @titleScene.resize width, height, orientation
 
 	# Wait until "deviceready" event is fired, if necessary (Cordova only)
 	if env.cordova

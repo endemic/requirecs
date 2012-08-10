@@ -1,6 +1,6 @@
 ###
 AboutScene
-	- Shows credits and lets user reset data
+	- Shows credits
 ###
 define [
 	'jquery'
@@ -16,9 +16,11 @@ define [
 			if env.mobile
 				events =
 					'touchstart .back': 'back' 
+					'touchstart .showDialog': 'showDialog'
 			else
 				events =
 					'click .back': 'back' 
+					'click .showDialog': 'showDialog'
 
 		initialize: ->
 			@elem = $(template)
@@ -28,3 +30,21 @@ define [
 			e.preventDefault()
 			@trigger 'sfx:play', 'button'
 			@trigger 'scene:change', 'title'
+
+		showDialog: (e) ->
+			e.preventDefault()
+
+			new DialogBox
+				el: @elem
+				title: 'This is a dialog box with customizable buttons.'
+				buttons: [
+					{ 
+						text: 'Yes'
+						callback: => 
+							console.log "Execute whatever you want as a callback."
+					},
+					{
+						text: 'No'
+						# This button just dismisses the dialog box
+					}
+				]
