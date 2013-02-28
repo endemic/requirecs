@@ -9,7 +9,7 @@
     stubModules: ['text', 'cs'],
     paths: {
         'cs': '../coffeescript/cs',
-        'CoffeeScript': '../coffeescript/CoffeeScript',
+        'coffee-script': '../coffeescript/coffee-script',
         // jquery: 'lib/jquery-1.7.2.min',
         jquery: 'lib/zepto',
         underscore: 'lib/underscore',
@@ -21,7 +21,7 @@
             name: 'main',
             //The optimization will load CoffeeScript to convert the CoffeeScript files to plain JS. Use the exclude
             //directive so that the CoffeeScript module is not included in the built file. 
-            exclude: ['CoffeeScript']
+            exclude: ['coffee-script']
         }
     ]
 })

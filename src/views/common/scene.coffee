@@ -1,8 +1,8 @@
 define [
 	'jquery'
 	'backbone'
-	'cs!utilities/env'
-], ($, Backbone, env) ->
+	'cs!utilities/environment'
+], ($, Backbone, Environment) ->
 	class Scene extends Backbone.View
 		# Default action
 		render: ->
@@ -36,5 +36,4 @@ define [
 			@elem.addClass 'in'
 
 			# Execute callback if supplied
-			if typeof callback == "function"
-				_.delay callback, duration
+			if typeof callback == "function" then _.delay callback, duration

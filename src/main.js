@@ -1,8 +1,8 @@
 require({
 	paths: {
 		cs: '../coffeescript/cs',
-		CoffeeScript: '../coffeescript/CoffeeScript',
-		// jquery: 'lib/jquery-1.7.2.min',
+		'coffee-script': '../coffeescript/coffee-script',
+		// jquery: 'lib/jquery-1.9.1.min',
 		jquery: 'lib/zepto',
 		underscore: 'lib/underscore',
 		backbone: 'lib/backbone',
@@ -26,4 +26,4 @@ require({
         	exports: 'buzz'
         }
     }
-}, ['cs!csmain']);
+}, ['cs!app']);

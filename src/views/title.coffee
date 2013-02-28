@@ -1,14 +1,17 @@
+###
+@description Title or entry screen for yer app
+###
 define [
 	'jquery'
 	'backbone'
-	'cs!utilities/env'
+	'cs!utilities/environment'
 	'cs!views/common/scene'
 	'text!templates/title.html'
-], ($, Backbone, env, Scene, template) ->
+], ($, Backbone, Environment, Scene, template) ->
 	class TitleScene extends Scene
 		events: ->
 			# Determine whether touchscreen or desktop
-			if env.mobile
+			if Environment.mobile
 				events =
 					'touchstart .about': 'about'
 			else

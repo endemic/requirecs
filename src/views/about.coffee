@@ -1,19 +1,18 @@
 ###
-AboutScene
-	- Shows credits
+@description Shows credits or something
 ###
 define [
 	'jquery'
 	'backbone'
-	'cs!utilities/env'
+	'cs!utilities/environment'
 	'cs!views/common/scene'
 	'cs!views/common/dialog-box'
 	'text!templates/about.html'
-], ($, Backbone, env, Scene, DialogBox, template) ->
+], ($, Backbone, Environment, Scene, DialogBox, template) ->
 	class AboutScene extends Scene
 		events: ->
 			# Determine whether touchscreen or desktop
-			if env.mobile
+			if Environment.mobile
 				events =
 					'touchstart .back': 'back' 
 					'touchstart .showDialog': 'showDialog'

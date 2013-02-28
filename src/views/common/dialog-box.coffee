@@ -15,37 +15,44 @@ pass args object like this
 define [
 	'jquery'
 	'backbone'
-	'cs!utilities/env'
-], ($, Backbone, env) ->
+	'buzz'
+	'cs!utilities/environment'
+], ($, Backbone, buzz, Environment) ->
 	class DialogBox extends Backbone.View
 		animationTime: 300
 		doCallback: true
 
 		events: ->
 			# Determine whether touchscreen or desktop
-			if env.mobile
+			if Environment.mobile
 				events =
-					'touchstart button': 'onAction'
-					'orientationchange': 'orientationChange'
+					'touchstart .button': 'onAction'
 			else
 				events =
-					'click button': 'onAction'
-					'orientationchange': 'orientationChange'
+					'click .button': 'onAction'
 
 		initialize: ->
 			if @options.animationTime? then @animationTime = @options.animationTime
 
+			$(window).on 'resize', @resize
+
 			# Create HTML contents here
 			html = ''
 
-			if @options.title then html += "<h3>#{@options.title}</h3>"
+			if @options.title
+				html += "<h3>#{@options.title}</h3>"
 
-			if @options.message then html += "<p>#{@options.message}</p>"
+			if @options.message
+				html += "<p>#{@options.message}</p>"
 
 			for button in @options.buttons
-				html += '<button data-action="' + button.text.toLowerCase() + '">' + button.text + '</button>'
+				html += '<div class="button" data-action="' + button.text.toLowerCase() + '"><span data-action="' + button.text.toLowerCase() + '">' + button.text + '</span></div>'
 
-			template = """<div class="dialog-box">#{html}</div>"""
+			template = """
+						<div class="dialog-box">
+							#{html}
+						</div>
+					   """
 
 			@overlay = $('<div class="overlay"></div>')
 
@@ -61,14 +68,8 @@ define [
 				left: (@$el.width() - @elem.width()) / 2
 				top: -@elem.height()
 
-			transition = if env.desktop then 'top' else 'translateY'
-			animation = {}
-			animation[transition] = if env.desktop then ((@$el.height() - @elem.height()) / 2) + 'px' else ((@$el.height() + @elem.height()) / 2) + 'px'
-			animation.opacity = 1
-
 			# animate box & overlay into place
-			@elem.animate animation, @animationTime, 'swing'
-
+			@elem.animate { 'translateY': ((@$el.height() + @elem.height()) / 2) + 'px', 'opacity': 1 }, @animationTime
 			@overlay.animate { opacity: 0.7 }, @animationTime
 
 		# Determine which button was clicked, call the appropriate callback, then close the dialog box view
@@ -81,19 +82,16 @@ define [
 
 			buttonAction = $(e.target).attr 'data-action'
 
+			# Play sound effect
+			window.sounds?.button?.play()
+
 			# Search through the buttons array, looking for the callback associated w/ the clicked button
 			for button in @options.buttons
 				if button.text.toLowerCase() is buttonAction and typeof button.callback is "function"
 					_.delay button.callback, @animationTime
 
-			transition = if env.desktop then 'top' else 'translateY'
-			animation = {}
-			animation[transition] = -@elem.height() + 'px'
-			animation.opacity = 0
-
 			# animate box & overlay into place
-			@elem.animate animation, @animationTime, 'swing'
-
+			@elem.animate { 'translateY': -@elem.height() + 'px', 'opacity': 0 }, @animationTime
 			@overlay.animate { opacity: 0 }, @animationTime
 
 			# Remove all this nonsense
@@ -102,14 +100,14 @@ define [
 				@close()
 			, @animationTime
 
+		# Remove the resize event listener
+		onClose: ->
+			$(window).off 'resize', @resize
+
 		# Update position of dialog box when orientation changes
-		orientationChange: (e) ->
+		resize: (e) ->
 			@elem.css
 				left: (@$el.width() - @elem.width()) / 2
 
-			transition = if env.desktop then 'top' else 'translateY'
-			animation = {}
-			animation[transition] = if env.desktop then ((@$el.height() - @elem.height()) / 2) + 'px' else ((@$el.height() + @elem.height()) / 2) + 'px'
-
 			# animate box into new position
-			@elem.animate animation, @animationTime, 'swing'
+			@elem.animate { 'translateY': ((@$el.height() + @elem.height()) / 2) + 'px' }, @animationTime

@@ -1,5 +1,6 @@
 ###
 My lolbears interpretation of CGRect in CoffeeScript
+TODO: This should probably just be rewritten to support collision detection of jQuery elements
 ###
 define () ->
 	CGRect =
