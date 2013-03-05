@@ -24,5 +24,9 @@ define [
 
 		about: (e) ->
 			e.preventDefault()
+
+			# Don't allow button to be activated more than once
+			@undelegateEvents()
+
 			@trigger 'sfx:play', 'button'
 			@trigger 'scene:change', 'about'

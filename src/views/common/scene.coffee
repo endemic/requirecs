@@ -8,10 +8,6 @@ define [
 		render: ->
 			@$el.append @elem
 
-		# Method which simply prevents events from bubbling
-		preventDefault: (e) ->
-			e.preventDefault()
-
 		# Remove event handlers and hide this view's elem
 		hide: (duration = 500, callback) ->
 			@undelegateEvents()

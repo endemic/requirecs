@@ -36,26 +36,27 @@ body { font-size: 62.5%; background: #000; }
 #app { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; font: normal 1.6em/1.5 @font-family; text-align: center; color: @text-color; background: #000; background-size: 100%; .user-select-none;
 	.scene { position: absolute; top: 100%; width: 100%; height: 100%; background: #351125; overflow: hidden;
 		.container { overflow: hidden; }
-		&.in { -webkit-transition: -webkit-transform 0.5s ease-in-out; -webkit-transform: translateY(-100%); }
-		&.out { -webkit-transition: -webkit-transform 0.5s ease-in-out; -webkit-transform: translateY(-200%); }
-		&.instantIn { -webkit-transition: -webkit-transform 0s ease-in-out; -webkit-transform: translateY(-100%); }
-		&.instantOut { -webkit-transition: -webkit-transform 0s ease-in-out; -webkit-transform: translateY(-200%); }
+		&.in { -webkit-transition: -webkit-transform 0.5s ease-in-out; -webkit-transform: translateY(-100%); transition: transform 0.5s ease-in-out; transform: translateY(-100%); }
+		&.out { -webkit-transition: -webkit-transform 0.5s ease-in-out; -webkit-transform: translateY(-200%); transition: transform 0.5s ease-in-out; transform: translateY(-200%); }
 	}
 	
 	h1 { text-transform: uppercase; font: normal 2.6em/1.5 @font-family; margin: 3%; }
 	h2 { text-transform: uppercase; font: normal 2em/1.5 @font-family; margin: 3%; }
-	button { font: normal 1em/1.8 @font-family; width: 50%; border: 1px solid #000; background: #fff; color: #000; text-align: center; text-decoration: none; text-transform: uppercase; display: inline-block; margin: 3%; 
+
+	.button { font: normal 1em/1.8 @font-family; width: 35%; cursor: pointer; border: 1px solid #000; display: inline-block; background: #fff; color: #000; text-align: center; text-decoration: none; text-transform: uppercase; margin: 3%; 
 		&:active { color: red; }
-		&.small { width: 30%; font-size: 0.7em; line-height: 2; }
+		&.small { width: 15%; font-size: 0.7em; line-height: 2; }
 		&.back { float: left; }
 	}
+
 	ul { list-style-type: none; margin: 0; padding: 0; overflow: auto; }
 	p { margin: 0; }
 
-	.overlay { position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; background: rgba(0,0,0,0.65); background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); z-index: 3; opacity: 0; }
-	.dialog-box { background: #fff; color: #000; padding: 3%; border: 1px solid #000; position: absolute; width: 60%; z-index: 4; opacity: 0;
-		h3 { margin: 0; font-size: 1.3em; font-weight: normal; }
-		button { width: 35%; margin-top: 2%; }
+	.overlay { position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; background: rgba(0,0,0,0.65); background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); 
+		.modal { background: #fff; color: #000; padding: 3%; border: 1px solid #000; position: absolute; width: 60%; z-index: 1;
+			h3 { margin: 0; font-size: 1.3em; font-weight: normal; }
+			.button { width: 35%; margin-top: 2%; margin-bottom: 0; }
+		}
 	}
 
 	#title { 
