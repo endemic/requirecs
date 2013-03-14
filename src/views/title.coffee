@@ -7,11 +7,11 @@ define [
 	'cs!utilities/environment'
 	'cs!views/common/scene'
 	'text!templates/title.html'
-], ($, Backbone, Environment, Scene, template) ->
+], ($, Backbone, Env, Scene, template) ->
 	class TitleScene extends Scene
 		events: ->
 			# Determine whether touchscreen or desktop
-			if Environment.mobile
+			if Env.mobile
 				events =
 					'touchstart .about': 'about'
 			else

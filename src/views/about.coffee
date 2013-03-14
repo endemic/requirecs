@@ -8,11 +8,11 @@ define [
 	'cs!views/common/scene'
 	'cs!views/common/modal'
 	'text!templates/about.html'
-], ($, Backbone, Environment, Scene, Modal, template) ->
+], ($, Backbone, Env, Scene, Modal, template) ->
 	class AboutScene extends Scene
 		events: ->
 			# Determine whether touchscreen or desktop
-			if Environment.mobile
+			if Env.mobile
 				events =
 					'touchstart .back': 'back' 
 					'touchstart .showModal': 'showModal'
@@ -44,6 +44,8 @@ define [
 
 		showModal: (e) ->
 			e.preventDefault()
+
+			@trigger 'sfx:play', 'button'
 
 			@modal.show
 				title: 'This is a dialog box with customizable buttons.'

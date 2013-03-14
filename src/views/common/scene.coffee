@@ -2,7 +2,7 @@ define [
 	'jquery'
 	'backbone'
 	'cs!utilities/environment'
-], ($, Backbone, Environment) ->
+], ($, Backbone, Env) ->
 	class Scene extends Backbone.View
 		# Default action
 		render: ->

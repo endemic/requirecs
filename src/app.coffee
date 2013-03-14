@@ -10,7 +10,7 @@ define [
 	'cs!data/manifest'
 	'cs!views/title'
 	'cs!views/about'
-], ($, _, Backbone, Buzz, Environment, Manifest, TitleScene, AboutScene) ->
+], ($, _, Backbone, Buzz, Env, Manifest, TitleScene, AboutScene) ->
 	
 	# Extend local storage
 	Storage.prototype.setObject = (key, value) ->
@@ -75,13 +75,13 @@ define [
 			$(window).on 'resize', @resize
 
 			# Prevent content from dragging around on touchscreens
-			if Environment.mobile
+			if Env.mobile
 				$('body').on 'touchmove', (e) ->
 					e.preventDefault()
 
 			# Show the active scene after a slight delay, so user can view the amazing splash screen
 			_.delay =>
-				if Environment.cordova then navigator.splashscreen.hide()	# Manually remove the Cordova splash screen; which prevents a white flash while UIWebView is initialized
+				if Env.cordova then navigator.splashscreen.hide()	# Manually remove the Cordova splash screen; which prevents a white flash while UIWebView is initialized
 				@activeScene.show()
 			, 1000
 
@@ -219,7 +219,7 @@ define [
 		###
 		initializeAudio: ->
 			# Handle being moved to the background in Cordova
-			if Environment.cordova
+			if Env.cordova
 				document.addEventListener "pause", =>
 					if typeof @activeScene.pause is "function" then @activeScene.pause()
 					@stopMusic()
@@ -233,7 +233,7 @@ define [
 
 			# Load sounds
 			for key, sound of Manifest.sounds
-				if Environment.cordova
+				if Env.cordova
 					@sounds[key] = new Media(sound.src + sound.formats[0])
 				else
 					@sounds[key] = new Buzz.sound sound.src,
@@ -242,7 +242,7 @@ define [
 
 			# Load music
 			for key, music of Manifest.music
-				if Environment.cordova
+				if Env.cordova
 					@music[key] = new Media(music.src + music.formats[0])
 				else
 					@music[key] = new Buzz.sound music.src,
@@ -251,7 +251,7 @@ define [
 						loop: true
 
 	# Load the app; wait until "deviceready" event is fired, if necessary (Cordova only)
-	if Environment.cordova
+	if Env.cordova
 		document.addEventListener "deviceready", ->
 			window.app = new App
 		, false

@@ -17,7 +17,7 @@ define [
 	'underscore'
 	'backbone'
 	'cs!utilities/environment'
-], ($, _, Backbone, Environment) ->
+], ($, _, Backbone, Env) ->
 	class Modal extends Backbone.View
 		defaults:
 			animationTime: 300
@@ -30,7 +30,7 @@ define [
 
 		events: ->
 			# Determine whether touchscreen or desktop
-			if Environment.mobile
+			if Env.mobile
 				events =
 					'touchstart .modal .button': 'action'
 			else
