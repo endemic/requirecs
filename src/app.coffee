@@ -147,8 +147,8 @@ define [
 		###
 		resize: (e) ->
 			# Attempt to force a 2:3 aspect ratio, so that the percentage-based CSS layout is consistant
-			width = @el.outerWidth
-			height = @el.outerHeight
+			width = @el.width()
+			height = @el.height()
 
 			# This obj will be used to store how much padding is needed for each scene's container
 			padding = 
